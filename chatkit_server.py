@@ -44,8 +44,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
+        "https://mywebsite-7hf2qnzlxbumr9yt8zqmwi.streamlit.app/#about"
     ],
     allow_credentials=True,
     allow_methods=["*"],
