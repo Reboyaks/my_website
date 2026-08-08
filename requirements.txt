@@ -1,3 +1,6 @@
-streamlit
-pandas
-plotly
+fastapi
+uvicorn[standard]
+python-dotenv
+openai
+openai-agents
+openai-chatkit
