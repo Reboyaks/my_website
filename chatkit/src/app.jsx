@@ -4,6 +4,32 @@ import "./style.css";
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
+  const isEmbedMode =
+  new URLSearchParams(window.location.search).get("embed") === "1";
+
+  React.useEffect(() => {
+  if (!isEmbedMode) return;
+
+  const handleMessage = (event) => {
+    if (event.data?.source !== "reynaldo-streamlit") {
+      return;
+    }
+
+    if (event.data.type === "OPEN_CHAT") {
+      setIsOpen(true);
+    }
+
+    if (event.data.type === "CLOSE_CHAT") {
+      setIsOpen(false);
+    }
+  };
+
+  window.addEventListener("message", handleMessage);
+
+  return () => {
+    window.removeEventListener("message", handleMessage);
+  };
+}, [isEmbedMode]);
 
   let visitorId = localStorage.getItem("reynaldo_visitor_id");
 
@@ -39,7 +65,7 @@ export default function App() {
 
   return (
     <>
-      {!isOpen && (
+      {!isOpen && !isEmbedMode && (
         <button
           className="chat-bubble"
           onClick={() => {
