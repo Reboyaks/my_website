@@ -4057,23 +4057,50 @@ REYNALDO_CHATKIT_HTML = """
 </div>
 """
 
+
 REYNALDO_CHATKIT_CSS = """
 
-#reynaldo-chat-root {
-    width: 1px !important;
-    height: 1px !important;
+/* Component host */
+
+/* ============================================================
+   STREAMLIT COMPONENT BACKGROUND
+   ============================================================ */
+
+:host {
+    display: block !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
 
     margin: 0 !important;
     padding: 0 !important;
-
-    overflow: visible !important;
-
-    background: transparent !important;
 }
 
+html,
+body,
+#root {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
+
+body {
+    overflow: visible !important;
+}
 
 /* ============================================================
-   FLOATING BUTTON
+   CHAT BUTTON
    ============================================================ */
 
 #reynaldo-chat-button {
@@ -4084,22 +4111,19 @@ REYNALDO_CHATKIT_CSS = """
     bottom: 24px;
 
     display: flex;
-
     align-items: center;
     gap: 9px;
 
     padding: 13px 18px;
 
     border: 1px solid rgba(139, 92, 246, 0.55);
-
     border-radius: 999px;
 
-    background: rgba(17, 19, 24, 0.97);
+    background: #111318;
 
     color: white;
 
     font-family: Arial, sans-serif;
-
     font-size: 14px;
     font-weight: 600;
 
@@ -4110,20 +4134,6 @@ REYNALDO_CHATKIT_CSS = """
     box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.35),
         0 0 20px rgba(139, 92, 246, 0.12);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-#reynaldo-chat-button:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 14px 35px rgba(0, 0, 0, 0.4),
-        0 0 25px rgba(139, 92, 246, 0.2);
 }
 
 
@@ -4143,31 +4153,31 @@ REYNALDO_CHATKIT_CSS = """
     width: 460px;
     height: 680px;
 
-    background: #0b0d0f;
+    margin: 0;
+    padding: 0;
 
-    border: 1px solid #292d35;
+    background: transparent;
 
-    border-radius: 22px;
+    border: none;
 
-    overflow: hidden;
+    box-shadow: none;
+
+    overflow: visible;
 
     z-index: 2147483646;
-
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.55),
-        0 0 40px rgba(139, 92, 246, 0.08);
 }
 
 
 /* ============================================================
-   IFRAME
+   NETLIFY IFRAME
    ============================================================ */
 
 #reynaldo-chat-iframe {
 
     position: absolute;
 
-    inset: 0;
+    left: 0;
+    top: 0;
 
     width: 100%;
     height: 100%;
@@ -4175,11 +4185,17 @@ REYNALDO_CHATKIT_CSS = """
     border: none;
 
     display: block;
+
+    background: transparent;
+
+    border-radius: 22px;
+
+    overflow: hidden;
 }
 
 
 /* ============================================================
-   CLOSE BUTTON
+   STREAMLIT CLOSE BUTTON
    ============================================================ */
 
 #reynaldo-chat-close {
@@ -4189,27 +4205,26 @@ REYNALDO_CHATKIT_CSS = """
     top: 12px;
     right: 12px;
 
-    width: 40px;
-    height: 40px;
-
-    border: 1px solid #30343d;
-
-    border-radius: 50%;
-
-    background: rgba(17, 19, 24, 0.96);
-
-    color: white;
-
-    font-size: 25px;
-
-    cursor: pointer;
+    width: 42px;
+    height: 42px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    z-index: 10;
+    border: 1px solid #30343d;
+    border-radius: 50%;
+
+    background: #171a20;
+
+    color: white;
+
+    font-size: 27px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    z-index: 2147483647;
 }
 
 
@@ -4226,8 +4241,6 @@ REYNALDO_CHATKIT_CSS = """
 
         width: calc(100vw - 20px);
         height: calc(100vh - 20px);
-
-        border-radius: 18px;
     }
 
 }
@@ -4238,6 +4251,19 @@ REYNALDO_CHATKIT_JS = """
 export default function(component) {
 
     const root = component.parentElement;
+    
+    const wrapper = component.parentElement;
+
+    wrapper.style.width = "0px";
+    wrapper.style.height = "0px";
+    wrapper.style.minWidth = "0px";
+    wrapper.style.minHeight = "0px";
+    wrapper.style.margin = "0";
+    wrapper.style.padding = "0";
+    wrapper.style.border = "none";
+    wrapper.style.background = "transparent";
+    wrapper.style.boxShadow = "none";
+    wrapper.style.overflow = "visible";
 
     const button =
         root.querySelector("#reynaldo-chat-button");
@@ -4251,18 +4277,14 @@ export default function(component) {
     const iframe =
         root.querySelector("#reynaldo-chat-iframe");
 
-
     if (!button || !windowBox || !closeButton || !iframe) {
+        console.error("Reynaldo ChatKit: elements missing");
         return;
     }
-
-
-    /* OPEN */
 
     button.addEventListener("click", () => {
 
         button.style.display = "none";
-
         windowBox.style.display = "block";
 
         iframe.contentWindow.postMessage(
@@ -4272,16 +4294,11 @@ export default function(component) {
             },
             "https://reychatkit.netlify.app"
         );
-
     });
-
-
-    /* CLOSE */
 
     closeButton.addEventListener("click", () => {
 
         windowBox.style.display = "none";
-
         button.style.display = "flex";
 
         iframe.contentWindow.postMessage(
@@ -4291,9 +4308,7 @@ export default function(component) {
             },
             "https://reychatkit.netlify.app"
         );
-
     });
-
 }
 """
 
