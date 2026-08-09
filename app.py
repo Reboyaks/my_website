@@ -28,21 +28,41 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+    /* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+
+:root {
+    --bg: #0b0d0f;
+    --surface: #111318;
+    --surface-2: #171a20;
+    --text: #ffffff;
+    --muted: #8f96a3;
+    --border: #292d35;
+    --accent: #8b5cf6;
+}
+
+
+/* LIGHT MODE */
+
+[data-theme="light"] {
+    --bg: #f7f7f8;
+    --surface: #ffffff;
+    --surface-2: #f0f1f3;
+    --text: #171717;
+    --muted: #626873;
+    --border: #dedfe3;
+    --accent: #7c3aed;
+}
+
     /* =====================================================
        GLOBAL
        ===================================================== */
 
     .stApp {
-        background:
-            radial-gradient(
-                circle at 50% -10%,
-                rgba(139, 92, 246, 0.075),
-                transparent 35%
-            ),
-            #0b0d10;
-
-        color: #f5f5f5;
-    }
+    background: var(--bg) !important;
+    color: var(--text) !important;
+}
 
     .block-container {
         max-width: 1120px;
