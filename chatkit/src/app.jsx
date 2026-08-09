@@ -15,7 +15,7 @@ function App() {
  const { control } = useChatKit({
   api: {
     url: "https://reynaldo-chatkit.onrender.com",
-    domainKey: "domain_pk_6a76f6e452ec8190885ed699fac74ce207a3ad15d97e3544",
+    domainKey: "domain_pk_6a77d2f060988196ba6dd4ba9af06d8c0f888c9452fa380f",
 
     fetch: async (input, init) => {
       return fetch(input, {
