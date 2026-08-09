@@ -4028,22 +4028,38 @@ import streamlit as st
 # ============================================================
 
 REYNALDO_CHATKIT_HTML = """
-<div id="reynaldo-chat-container">
+<div id="reynaldo-chat-root">
 
-    <iframe
-        id="reynaldo-chat-iframe"
-        src="https://reychatkit.netlify.app/"
-        title="Ask Reynaldo AI Assistant"
-        allow="microphone; camera"
-    ></iframe>
+    <button id="reynaldo-chat-button" type="button">
+        <span>✦</span>
+        <span>Ask Reynaldo</span>
+    </button>
+
+    <div id="reynaldo-chat-window">
+
+        <button
+            id="reynaldo-chat-close"
+            type="button"
+            aria-label="Close chat"
+        >
+            ×
+        </button>
+
+        <iframe
+            id="reynaldo-chat-iframe"
+            src="https://reychatkit.netlify.app/?embed=1"
+            title="Ask Reynaldo AI Assistant"
+            allow="microphone; camera"
+        ></iframe>
+
+    </div>
 
 </div>
 """
 
-
 REYNALDO_CHATKIT_CSS = """
 
-#reynaldo-chat-container {
+#reynaldo-chat-root {
     width: 1px !important;
     height: 1px !important;
 
@@ -4056,51 +4072,162 @@ REYNALDO_CHATKIT_CSS = """
 }
 
 
-#reynaldo-chat-iframe {
+/* ============================================================
+   FLOATING BUTTON
+   ============================================================ */
+
+#reynaldo-chat-button {
 
     position: fixed;
 
-    right: 0;
-    bottom: 0;
+    right: 24px;
+    bottom: 24px;
 
-    width: 120px;
-    height: 80px;
+    display: flex;
 
-    border: none;
+    align-items: center;
+    gap: 9px;
 
-    background: transparent;
+    padding: 13px 18px;
+
+    border: 1px solid rgba(139, 92, 246, 0.55);
+
+    border-radius: 999px;
+
+    background: rgba(17, 19, 24, 0.97);
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
 
     z-index: 2147483647;
 
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(139, 92, 246, 0.12);
+
     transition:
-        width 0.2s ease,
-        height 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
-/* OPEN STATE */
+#reynaldo-chat-button:hover {
 
-#reynaldo-chat-container.chat-open #reynaldo-chat-iframe {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(139, 92, 246, 0.2);
+}
+
+
+/* ============================================================
+   CHAT WINDOW
+   ============================================================ */
+
+#reynaldo-chat-window {
+
+    display: none;
+
+    position: fixed;
 
     right: 24px;
     bottom: 24px;
 
     width: 460px;
     height: 680px;
+
+    background: #0b0d0f;
+
+    border: 1px solid #292d35;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    z-index: 2147483646;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.55),
+        0 0 40px rgba(139, 92, 246, 0.08);
 }
 
 
-/* MOBILE */
+/* ============================================================
+   IFRAME
+   ============================================================ */
+
+#reynaldo-chat-iframe {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    display: block;
+}
+
+
+/* ============================================================
+   CLOSE BUTTON
+   ============================================================ */
+
+#reynaldo-chat-close {
+
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid #30343d;
+
+    border-radius: 50%;
+
+    background: rgba(17, 19, 24, 0.96);
+
+    color: white;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
 
 @media (max-width: 600px) {
 
-    #reynaldo-chat-container.chat-open #reynaldo-chat-iframe {
+    #reynaldo-chat-window {
 
         right: 10px;
         bottom: 10px;
 
         width: calc(100vw - 20px);
         height: calc(100vh - 20px);
+
+        border-radius: 18px;
     }
 
 }
@@ -4112,37 +4239,58 @@ export default function(component) {
 
     const root = component.parentElement;
 
-    const iframe = root.querySelector("#reynaldo-chat-iframe");
+    const button =
+        root.querySelector("#reynaldo-chat-button");
 
-    if (!iframe) {
+    const windowBox =
+        root.querySelector("#reynaldo-chat-window");
+
+    const closeButton =
+        root.querySelector("#reynaldo-chat-close");
+
+    const iframe =
+        root.querySelector("#reynaldo-chat-iframe");
+
+
+    if (!button || !windowBox || !closeButton || !iframe) {
         return;
     }
 
-    window.addEventListener("message", (event) => {
 
-        if (event.origin !== "https://reychatkit.netlify.app") {
-            return;
-        }
+    /* OPEN */
 
-        if (!event.data) {
-            return;
-        }
+    button.addEventListener("click", () => {
 
-        if (event.data.source !== "reynaldo-chatkit") {
-            return;
-        }
+        button.style.display = "none";
 
-        if (event.data.type === "CHAT_OPEN") {
+        windowBox.style.display = "block";
 
-            root.classList.add("chat-open");
+        iframe.contentWindow.postMessage(
+            {
+                source: "reynaldo-streamlit",
+                type: "OPEN_CHAT"
+            },
+            "https://reychatkit.netlify.app"
+        );
 
-        }
+    });
 
-        if (event.data.type === "CHAT_CLOSE") {
 
-            root.classList.remove("chat-open");
+    /* CLOSE */
 
-        }
+    closeButton.addEventListener("click", () => {
+
+        windowBox.style.display = "none";
+
+        button.style.display = "flex";
+
+        iframe.contentWindow.postMessage(
+            {
+                source: "reynaldo-streamlit",
+                type: "CLOSE_CHAT"
+            },
+            "https://reychatkit.netlify.app"
+        );
 
     });
 
