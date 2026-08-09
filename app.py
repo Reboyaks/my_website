@@ -1,6 +1,7 @@
 import os
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 from pathlib import Path
 import streamlit as st
@@ -4006,6 +4007,7 @@ st.html("""
 """)
 
 
+
 # =========================================================
 # FOOTER
 # =========================================================
@@ -4017,3 +4019,146 @@ st.html("""
 
 </div>
 """)
+
+import streamlit as st
+
+
+# ============================================================
+# REYNALDO CHATKIT
+# ============================================================
+
+REYNALDO_CHATKIT_HTML = """
+<div id="reynaldo-chat-container">
+
+    <iframe
+        id="reynaldo-chat-iframe"
+        src="https://reychatkit.netlify.app/"
+        title="Ask Reynaldo AI Assistant"
+        allow="microphone; camera"
+    ></iframe>
+
+</div>
+"""
+
+
+REYNALDO_CHATKIT_CSS = """
+
+#reynaldo-chat-container {
+    width: 1px !important;
+    height: 1px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: visible !important;
+
+    background: transparent !important;
+}
+
+
+#reynaldo-chat-iframe {
+
+    position: fixed;
+
+    right: 0;
+    bottom: 0;
+
+    width: 120px;
+    height: 80px;
+
+    border: none;
+
+    background: transparent;
+
+    z-index: 2147483647;
+
+    transition:
+        width 0.2s ease,
+        height 0.2s ease;
+}
+
+
+/* OPEN STATE */
+
+#reynaldo-chat-container.chat-open #reynaldo-chat-iframe {
+
+    right: 24px;
+    bottom: 24px;
+
+    width: 460px;
+    height: 680px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    #reynaldo-chat-container.chat-open #reynaldo-chat-iframe {
+
+        right: 10px;
+        bottom: 10px;
+
+        width: calc(100vw - 20px);
+        height: calc(100vh - 20px);
+    }
+
+}
+"""
+
+
+REYNALDO_CHATKIT_JS = """
+export default function(component) {
+
+    const root = component.parentElement;
+
+    const iframe = root.querySelector("#reynaldo-chat-iframe");
+
+    if (!iframe) {
+        return;
+    }
+
+    window.addEventListener("message", (event) => {
+
+        if (event.origin !== "https://reychatkit.netlify.app") {
+            return;
+        }
+
+        if (!event.data) {
+            return;
+        }
+
+        if (event.data.source !== "reynaldo-chatkit") {
+            return;
+        }
+
+        if (event.data.type === "CHAT_OPEN") {
+
+            root.classList.add("chat-open");
+
+        }
+
+        if (event.data.type === "CHAT_CLOSE") {
+
+            root.classList.remove("chat-open");
+
+        }
+
+    });
+
+}
+"""
+
+
+reynaldo_chatkit = st.components.v2.component(
+    "reynaldo_chatkit",
+    html=REYNALDO_CHATKIT_HTML,
+    css=REYNALDO_CHATKIT_CSS,
+    js=REYNALDO_CHATKIT_JS,
+    isolate_styles=False,
+)
+
+reynaldo_chatkit(
+    width=1,
+    height=1,
+)

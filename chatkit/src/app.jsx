@@ -42,7 +42,10 @@ export default function App() {
       {!isOpen && (
         <button
           className="chat-bubble"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            notifyParent("CHAT_OPEN");
+            }}
           aria-label="Open Reynaldo AI assistant"
         >
           ✦
@@ -69,7 +72,10 @@ export default function App() {
 
             <button
               className="chat-close"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                notifyParent("CHAT_CLOSE");
+                }}
               aria-label="Close chat"
             >
               ×
@@ -84,4 +90,14 @@ export default function App() {
       )}
     </>
   );
+
+  function notifyParent(type) {
+  window.parent.postMessage(
+    {
+      source: "reynaldo-chatkit",
+      type,
+    },
+    "*"
+  );
+}
 }
