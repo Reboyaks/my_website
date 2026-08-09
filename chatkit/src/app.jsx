@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChatKit, useChatKit } from "@openai/chatkit-react";
 import "./style.css";
 
-function App() {
+export default function App() {
   const [isOpen, setIsOpen] = useState(false);
 
   let visitorId = localStorage.getItem("reynaldo_visitor_id");
@@ -12,41 +12,40 @@ function App() {
     localStorage.setItem("reynaldo_visitor_id", visitorId);
   }
 
- const { control } = useChatKit({
-  api: {
-    url: "https://reynaldo-chatkit.onrender.com",
-    domainKey: "domain_pk_6a77d2f060988196ba6dd4ba9af06d8c0f888c9452fa380f",
+  const { control } = useChatKit({
+    api: {
+      url: "https://reynaldo-chatkit.onrender.com/chatkit",
+      domainKey: "domain_pk_6a77d2f060988196ba6dd4ba9af06d8c0f888c9452fa380f",
 
-    fetch: async (input, init) => {
-      return fetch(input, {
-        ...init,
-        headers: {
-          ...(init?.headers || {}),
-          "X-Visitor-ID": visitorId,
-        },
-      });
+      fetch: async (input, init) => {
+        return fetch(input, {
+          ...init,
+          headers: {
+            ...(init?.headers || {}),
+            "X-Visitor-ID": visitorId,
+          },
+        });
+      },
     },
-  },
 
-  onReady() {
-    console.log("Reynaldo ChatKit ready");
-  },
+    onReady() {
+      console.log("Reynaldo ChatKit ready");
+    },
 
-  onError(error) {
-    console.error("Reynaldo ChatKit error:", error);
-  },
-});
+    onError(error) {
+      console.error("Reynaldo ChatKit error:", error);
+    },
+  });
 
   return (
     <>
-      {/* Floating Chat Button */}
       {!isOpen && (
         <button
           className="chat-bubble"
           onClick={() => setIsOpen(true)}
           aria-label="Open Reynaldo AI assistant"
         >
-          <span className="chat-bubble-icon">✦</span>
+          ✦
 
           <span className="chat-bubble-text">
             Ask Reynaldo
@@ -54,7 +53,6 @@ function App() {
         </button>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
         <div className="chat-panel">
 
@@ -87,5 +85,3 @@ function App() {
     </>
   );
 }
-
-export default App;
