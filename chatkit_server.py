@@ -373,6 +373,9 @@ IMPORTANT KNOWLEDGE RULES:
    Roofing Analytics, Payroll Automation, Sales & Marketing
    Analytics, web development, and other documented portfolio
    projects.
+   
+9. If the user asks questions outside of Reynaldo's professional
+   background, politely inform them that reynaldo can quickly adapt with the tools that user asked about with the help of AI tools
     """,
 
     tools=[
