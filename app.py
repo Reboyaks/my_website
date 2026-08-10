@@ -298,120 +298,94 @@ if "selected_funnel" not in st.session_state:
 # Funnel helper
 # ---------------------------------------------------------
 
-def funnel_button(stage, width):
+def funnel_button(stage):
 
-    total_width = 14
-    side_width = (total_width - width) / 2
-
-    cols = st.columns(
-        [side_width, width, side_width]
-    )
-
-    with cols[1]:
-
-        if st.button(
-            f"{funnel_data[stage]['number']}  ·  {stage}",
-            key=f"funnel_{stage}",
-            use_container_width=True
-        ):
-            st.session_state.selected_funnel = stage
+    if st.button(
+        f"{funnel_data[stage]['number']}  ·  {stage}",
+        key=f"funnel_{stage}",
+        use_container_width=True
+    ):
+        st.session_state.selected_funnel = stage
             
 # =========================================================
-# FUNNEL
+# PROCESS + DETAIL — TWO COLUMN LAYOUT
 # =========================================================
 
-st.markdown(
-    '<div class="funnel-container">',
-    unsafe_allow_html=True
-)
+with st.container(key="process-layout"):
+
+    process_col, detail_col = st.columns(
+        [0.9, 1.1],
+        gap="large"
+    )
+
+    # -----------------------------------------------------
+    # LEFT — PROCESS FLOW
+    # -----------------------------------------------------
+
+    with process_col:
+
+        funnel_button("Understand")
+
+        st.html("""
+        <div class="funnel-arrow">↓</div>
+        """)
+
+        funnel_button("Collect")
+
+        st.html("""
+        <div class="funnel-arrow">↓</div>
+        """)
+
+        funnel_button("Transform")
+
+        st.html("""
+        <div class="funnel-arrow">↓</div>
+        """)
+
+        funnel_button("Automate")
+
+        st.html("""
+        <div class="funnel-arrow">↓</div>
+        """)
+
+        funnel_button("Visualize")
 
 
-funnel_button("Understand", 12)
+    # -----------------------------------------------------
+    # RIGHT — SELECTED DETAIL
+    # -----------------------------------------------------
 
-st.html("""
-<div class="funnel-arrow">↓</div>
-""")
+    with detail_col:
 
-funnel_button("Collect", 10)
+        selected = st.session_state.selected_funnel
+        data = funnel_data[selected]
 
-st.html("""
-<div class="funnel-arrow">↓</div>
-""")
+        tools_html = "".join(
+            f'<div class="funnel-tool">{tool}</div>'
+            for tool in data["tools"]
+        )
 
-funnel_button("Transform", 8)
+        st.html(f"""
+        <div class="funnel-detail">
 
-st.html("""
-<div class="funnel-arrow">↓</div>
-""")
+            <div class="funnel-detail-label">
+                STEP {data["number"]}
+            </div>
 
-funnel_button("Automate", 10)
+            <div class="funnel-detail-title">
+                {selected}
+            </div>
 
-st.html("""
-<div class="funnel-arrow">↓</div>
-""")
+            <div class="funnel-detail-description">
+                {data["description"]}
+            </div>
 
-funnel_button("Visualize", 12)
+            <div class="funnel-tools">
+                {tools_html}
+            </div>
 
-
-# =========================================================
-# FUNNEL DETAILS
-# =========================================================
-
-selected = st.session_state.selected_funnel
-data = funnel_data[selected]
-
-tools_html = "".join(
-    f'<div class="funnel-tool">{tool}</div>'
-    for tool in data["tools"]
-)
-
-st.html(f"""
-<div class="funnel-detail">
-
-    <div class="funnel-detail-label">
-        STEP {data["number"]}
-    </div>
-
-    <div class="funnel-detail-title">
-        {selected}
-    </div>
-
-    <div class="funnel-detail-description">
-        {data["description"]}
-    </div>
-
-    <div class="funnel-tools">
-        {tools_html}
-    </div>
-
-</div>
-""")
-
-st.html("""
-<div class="funnel-outcome">
-
-    <div class="funnel-outcome-label">
-        BUSINESS OUTCOME
-    </div>
-
-    <div class="funnel-outcome-title">
-        Better decisions. Less manual work.
-    </div>
-
-    <div class="funnel-outcome-text">
-        The goal isn't just cleaner data or better dashboards.
-        It's creating systems that make the business easier
-        to understand, operate, and improve.
-    </div>
-
-</div>
-""")
-
-
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
+        </div>
+        """)
 
 # =========================================================
 # WHAT I BUILD
