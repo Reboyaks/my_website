@@ -2049,13 +2049,16 @@ ABOUT + EXPERIENCE
 
     margin-bottom: 20px;
 
-    background: #0f172a;
+    background: #ffffff !important;
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #dbe2ea !important;
 
     border-radius: 999px;
 
-    color: #64748b;
+    color: #475569 !important;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.06) !important;
 
     font-size: 10px;
     font-weight: 500;
@@ -2069,9 +2072,10 @@ ABOUT + EXPERIENCE
 
     border-radius: 50%;
 
-    background: #4f46e5;
+    background: #4f46e5 !important;
 
-    box-shadow: 0 0 8px rgba(79, 70, 229, 0.7);
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.10) !important
 }
 
 
