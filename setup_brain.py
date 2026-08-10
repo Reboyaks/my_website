@@ -7,7 +7,7 @@ load_dotenv()
 
 client = OpenAI()
 
-pdf_path = Path("Reynaldo_AI_Brain.pdf")
+pdf_path = Path("Reynaldo_AI_Brain_v2.pdf")
 
 if not pdf_path.exists():
     raise FileNotFoundError(
