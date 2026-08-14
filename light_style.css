@@ -3038,3 +3038,48 @@ div[data-testid="stDownloadButton"] > button:hover {
         line-height: 1 !important;
     }
 }
+
+
+/* =====================================================
+   FEATURED PROJECT CARDS
+   ===================================================== */
+
+.project-selector {
+    min-height: 230px;
+    height: 230px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 28px 26px 24px 26px;
+}
+
+/* Keep project titles aligned */
+.project-selector-title {
+    min-height: 48px;
+    line-height: 1.35;
+}
+
+/* Give descriptions a controlled area */
+.project-selector-description {
+    min-height: 72px;
+    max-height: 72px;
+
+    line-height: 1.65;
+
+    overflow: hidden;
+}
+
+/* Keep technology line at the bottom */
+.project-selector-tools {
+    margin-top: auto;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Project buttons */
+.project-selector + div {
+    margin-top: 10px;
+}
