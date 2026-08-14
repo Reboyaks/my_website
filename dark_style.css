@@ -2693,41 +2693,64 @@ div[data-testid="stButton"] > button:hover::after {
    ===================================================== */
 
 .project-selector {
-    min-height: 230px;
-    height: 230px;
+    height: 250px;
+    min-height: 250px;
 
     display: flex;
     flex-direction: column;
 
     padding: 28px 26px 24px 26px;
-}
-
-/* Keep project titles aligned */
-.project-selector-title {
-    min-height: 48px;
-    line-height: 1.35;
-}
-
-/* Give descriptions a controlled area */
-.project-selector-description {
-    min-height: 72px;
-    max-height: 72px;
-
-    line-height: 1.65;
 
     overflow: hidden;
 }
 
-/* Keep technology line at the bottom */
+/* Category */
+.project-selector-category {
+    flex-shrink: 0;
+}
+
+/* Title */
+.project-selector-title {
+    flex-shrink: 0;
+
+    min-height: 52px;
+
+    line-height: 1.35;
+}
+
+/* Scrollable description */
+.project-selector-description {
+    flex: 1;
+
+    min-height: 0;
+
+    line-height: 1.6;
+
+    overflow-y: auto;
+
+    padding-right: 8px;
+}
+
+/* Technologies */
 .project-selector-tools {
-    margin-top: auto;
+    flex-shrink: 0;
+
+    padding-top: 16px;
 
     white-space: nowrap;
+
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Project buttons */
-.project-selector + div {
-    margin-top: 10px;
+.project-selector-description::-webkit-scrollbar {
+    width: 4px;
+}
+
+.project-selector-description::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.project-selector-description::-webkit-scrollbar-thumb {
+    background: #475569;
 }

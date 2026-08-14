@@ -640,10 +640,9 @@ project_data = {
     "category": "WEB APPLICATION + AUTOMATION",
 
     "description": (
-        "A full-stack lead discovery application designed to find, "
-        "qualify, enrich, score, and manage roofing company prospects "
-        "from live web data."
-    ),
+    "A full-stack lead discovery application for finding, "
+    "qualifying, enriching, and scoring roofing company prospects."
+),
 
     "challenge": (
         "Finding relevant roofing prospects required repetitive "
