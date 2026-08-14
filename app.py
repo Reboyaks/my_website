@@ -633,7 +633,60 @@ project_data = {
     ),
     
     "YouTube": "https://youtu.be/NiThRvV7QJo"
+},
+
+"Lead Finder Web Application": {
+
+    "category": "WEB APPLICATION + AUTOMATION",
+
+    "description": (
+        "A full-stack lead discovery application designed to find, "
+        "qualify, enrich, score, and manage roofing company prospects "
+        "from live web data."
+    ),
+
+    "challenge": (
+        "Finding relevant roofing prospects required repetitive "
+        "web searching, manual qualification, website research, "
+        "and prospect prioritization."
+    ),
+
+    "solution": (
+        "Built a web application that searches live web data, "
+        "qualifies roofing companies, enriches their websites "
+        "with business intelligence, scores prospects, and prepares "
+        "qualified leads for sales workflows."
+    ),
+
+    "flow": [
+        "Live Web Search",
+        "Lead Qualification",
+        "Website Enrichment",
+        "Technology Detection",
+        "Prospect Scoring",
+        "Sales Pipeline"
+    ],
+
+    "tools": [
+        "React",
+        "FastAPI",
+        "Python",
+        "Brave Search API",
+        "SQLite",
+        "REST API"
+    ],
+
+    "impact": (
+        "Turned manual prospect research into a structured lead "
+        "discovery and qualification workflow with searchable "
+        "prospect data, enrichment, scoring, and sales tracking."
+    ),
+
+    "YouTube": "To be Made"
 }
+    
+    
+    
 }
 # =========================================================
 # INTERACTIVE PROJECT SHOWCASE
@@ -674,22 +727,13 @@ if "selected_project" not in st.session_state:
 
 projects = list(project_data.keys())
 
-col1, col2, col3 = st.columns(3)
-
+cols = st.columns(4)
 
 for index, project_name in enumerate(projects):
 
     data = project_data[project_name]
 
-    if index == 0:
-        column = col1
-
-    elif index == 1:
-        column = col2
-
-    else:
-        column = col3
-
+    column = cols[index % 4]
 
     with column:
 
@@ -731,7 +775,6 @@ for index, project_name in enumerate(projects):
             key=f"project_{index}",
             use_container_width=True
         ):
-
             st.session_state.selected_project = project_name
 
         st.markdown(
