@@ -3103,6 +3103,5 @@ div[data-testid="stDownloadButton"] > button:hover {
 }
 
 .project-selector-description::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
+    background: #475569;
 }
